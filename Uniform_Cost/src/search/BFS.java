@@ -1,6 +1,10 @@
+package search;
 // package BFS;
 
 import java.util.*;
+
+import model.Graph;
+import model.Node;
 
 public class BFS {
 	// Attributes 

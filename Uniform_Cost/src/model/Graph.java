@@ -1,3 +1,4 @@
+package model;
 // package BFS;
 
 import java.util.*;
