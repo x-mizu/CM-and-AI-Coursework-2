@@ -1,0 +1,154 @@
+
+package cn.edu.gdut.java.test;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.PriorityQueue;
+
+public class Graph {
+
+
+    private Map<String, AdjList> graph;
+
+
+    /**
+     * test main
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        GBFS("S", "G");
+
+    }
+
+    /**
+     * algorithm: Greedy Best First Search
+     * Greedy Best-First Search
+     * use heuristic function as evaluation function: f(n) = h(n)
+     * always expands the node that is closest to the goal node
+     * @param start start node
+     * @param end   end node
+     */
+    public static void GBFS(String start, String end) {
+        Graph roads = new Graph();
+        roads.init();
+        AdjList adjList = roads.graph.get(start);
+        System.out.println("Greedy Best First Search Starts!");
+        AdjNode startNode = findNode(adjList, start);
+        System.out.print("start from node: \n" + start + "(" + startNode.cost + ")" + "-->");
+        int totalCost = 0;
+        while (adjList.size() > 0) {
+            AdjNode nextNode = adjList.poll();
+            int nodeCost = nextNode.cost;
+            totalCost += nodeCost;
+
+            System.out.print(nextNode.name + "(" + nodeCost + ")-->");
+            adjList = roads.graph.get(nextNode.name);
+
+            if (isExist(adjList, end)) {
+                int lastNodeCost = adjList.poll().cost;
+                totalCost += lastNodeCost;
+                System.out.println(end + "(" + lastNodeCost + ").");
+                System.out.println("find path! \ntotal cost is : " + totalCost);
+                return;
+            }
+        }
+    }
+
+    /**
+     * init Touring in Romania road map
+     */
+    public void init() {
+        graph = new HashMap<>();
+
+        String name = "S";
+        int cost = 9;
+        AdjList adjList = new AdjList();
+        adjList.add(new AdjNode("S", 9));
+        adjList.add(new AdjNode("A", 6));
+        adjList.add(new AdjNode("C", 2));
+        adjList.add(new AdjNode("D", 5));
+        graph.put(name, adjList);
+
+        name = "C";
+        adjList = new AdjList();
+        adjList.add(new AdjNode("B", 2));
+        adjList.add(new AdjNode("J", 1));
+        adjList.add(new AdjNode("F", 3));
+        graph.put(name, adjList);
+
+        name = "J";
+        adjList = new AdjList();
+        adjList.add(new AdjNode("G1", 0));
+        graph.put(name, adjList);
+    }
+
+    /**
+     * whether the node name is in the adjlist
+     *
+     * @param adjList
+     * @param name
+     * @return
+     */
+    public static boolean isExist(AdjList adjList, String name) {
+        for (AdjNode n :
+                adjList) {
+            if (n.name.equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * find a node by name
+     *
+     * @param adjList
+     * @param name
+     * @return
+     */
+    public static AdjNode findNode(AdjList adjList, String name) {
+        for (AdjNode n :
+                adjList) {
+            if (n.name.equals(name)) {
+                return n;
+            }
+        }
+        return null;
+    }
+
+}
+
+/**
+ * adjacent list
+ * priority queue
+ */
+class AdjList extends PriorityQueue<AdjNode> {
+
+}
+
+/**
+ * adjacent node
+ */
+class AdjNode implements Comparable<AdjNode> {
+    String name;
+    int cost;
+
+    public AdjNode(String name, int cost) {
+        this.name = name;
+        this.cost = cost;
+    }
+
+    @Override
+    public int compareTo(AdjNode o) {
+        return Integer.compare(cost, o.cost);
+    }
+
+    @Override
+    public String toString() {
+        return "AdjNode{" +
+                "name='" + name + '\'' +
+                ", cost=" + cost +
+                '}';
+    }
+}
