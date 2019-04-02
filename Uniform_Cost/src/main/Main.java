@@ -1,7 +1,9 @@
 package main;
 
+import java.io.IOException;
 import java.util.List;
 
+import export.CSV;
 import model.Node;
 import model.Path;
 import search.UniformCost;
@@ -59,10 +61,31 @@ public class Main {
 		
 		UniformCost uc = new UniformCost(S);
 		List<Path> listPath = uc.SearchBestPath();
+		List<String[]> resultToPrint = uc.getResult();
+		
+		for (String[] strings : resultToPrint) {
+			for (String string : strings) {
+				System.out.print(string + ", ");
+			}
+			System.out.println();
+		}
+		
+		String[] title = {"Best Path Found"};
+		resultToPrint.add(title);
+		String[] headers = {"Destination Node", "Previous Node", "Total Cost"};
+		resultToPrint.add(headers);
 		
 		for (Path path : listPath) {
 			System.out.println(path.toString());
+			String[] row = {path.getDestinationNode().getNodeName(), path.getPreviousNode().getNodeName(), String.valueOf(path.getTotalCost())};
+			resultToPrint.add(row);
 		}
+		
+		try {
+			CSV.exportStringListToCSV(resultToPrint, "result");
+		} catch (IOException e) {
+			e.printStackTrace();
+		};
 	}
 
 }

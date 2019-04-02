@@ -14,6 +14,7 @@ public class UniformCost {
 	private int iterations;
 	private List<Path> pathList;
 	private List<Node> visitedNodes;
+	private List<String[]> result;
 	
 	public UniformCost (Node startNode) {
 		this.startNode = startNode;
@@ -25,15 +26,24 @@ public class UniformCost {
 		
 		
 		this.visitedNodes = new ArrayList<Node>();
+		this.result = new ArrayList<String[]>();
 	}
 	
 	public List<Path> SearchBestPath() {
+		// this.visitedNodes.add(this.startNode); // add start Node to visited Nodes
 		
-		// this.currentNode = this.startNode; // set current Node
+		// print and set result Table
 		System.out.println("Start Node: " + this.startNode.getNodeName());
 		
-		// this.allNodes.remove(this.currentNode); // remove current Node from all Nodes
-		this.visitedNodes.add(this.startNode); // add current Node to visited Nodes
+		String[] title = {"Uniform Cost"};
+		this.result.add(title);
+		String[] headers = {"Step", "Open Nodes", "Close Nodes", "Current Node"};
+		this.result.add(headers);
+		String[] firstRow = {String.valueOf(this.iterations), "(" + this.startNode.getNodeName() + ": 0)", "", "(" + this.startNode.getNodeName() + ": 0)"};
+		this.result.add(firstRow);
+		
+		String closeStringNodes = "(" + this.startNode.getNodeName() + ": 0)";
+		
 		while (true) {
 			Map<Node, Integer> startNeighbours = this.startNode.getNeighbours(); // get neighbours realting the start Node
 			Set<Node> openNodes = startNeighbours.keySet(); // get all neighbours Nodes
@@ -47,9 +57,12 @@ public class UniformCost {
 			
 			// if there is at least one neighbour
 			if (openNodes.size() > 0 ) {
+				
+				String openStringNodes = "";
 				System.out.println("Open Nodes: ");
 				for (Node node : openNodes) {
 					System.out.print(node.getNodeName() + ", ");
+					openStringNodes += "(" + node.getNodeName() + ": " + startNeighbours.get((node)) + ")";
 				}
 				System.out.println();
 				
@@ -62,8 +75,8 @@ public class UniformCost {
 				
 				System.out.println("Next Node: " + nextNode.getNodeName() +"; Cost: " + startNeighbours.get(nextNode));
 				
-				Map<Node, Integer> nextNeighbours = nextNode.getNeighbours(); // get neighbours realting the next Node
-				Set<Node> nextNodes = nextNeighbours.keySet(); // get all neighbours Nodes
+				Map<Node, Integer> nextNeighbours = nextNode.getNeighbours(); // get neighbours relating the next Node
+				Set<Node> nextNodes = nextNeighbours.keySet(); // get all next neighbours Nodes
 				
 				// att first Node neighbours with this new information
 				for (Node node : nextNodes) {
@@ -81,7 +94,15 @@ public class UniformCost {
 				}
 				
 				System.out.println("---------------");
+				
+				String currentStringNode = "(" + nextNode.getNodeName() + ": " + startNeighbours.get((nextNode)) + ")";
+				
 				this.visitedNodes.add(nextNode);
+				this.iterations++;
+				
+				String[] nextRow = {String.valueOf(this.iterations), openStringNodes, closeStringNodes, currentStringNode};
+				this.result.add(nextRow);
+				closeStringNodes += currentStringNode;
 				
 			} else {
 				break;
@@ -111,22 +132,6 @@ public class UniformCost {
 		this.pathList.removeAll(pathsToRemove);
 	}
 
-	public Node getStartNode() {
-		return startNode;
-	}
-
-	public void setStartNode(Node startNode) {
-		this.startNode = startNode;
-	}
-
-	public int getIterations() {
-		return iterations;
-	}
-
-	public void setIterations(int iterations) {
-		this.iterations = iterations;
-	}
-
 	public List<Path> getPathList() {
 		return pathList;
 	}
@@ -134,6 +139,15 @@ public class UniformCost {
 	public void setPathList(List<Path> pathList) {
 		this.pathList = pathList;
 	}
+
+	public List<String[]> getResult() {
+		return result;
+	}
+
+	public void setResult(List<String[]> result) {
+		this.result = result;
+	}
+
 	
 	
 }
