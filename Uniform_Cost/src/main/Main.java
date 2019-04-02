@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Node;
+import search.UniformCost;
 
 public class Main {
 	public static void main(String[] args) {
@@ -28,7 +29,7 @@ public class Main {
 		S.addNeighbour(C, 3);
 		// ------------------
 		// A node
-		A.addNeighbour(B, 2);
+		A.addNeighbour(B, 3);
 		A.addNeighbour(G1, 8);
 		// ------------------
 		// B node
@@ -69,7 +70,8 @@ public class Main {
 		allNodes.add(J);
 		// ------------------
 		
-		
+		UniformCost uc = new UniformCost(allNodes, S);
+		uc.SearchBestPaths();
 	}
 
 }

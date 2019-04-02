@@ -34,42 +34,61 @@ public class UniformCost {
 	
 	public List<Path> SearchBestPaths() {
 		
-		this.currentNode = this.startNode; // set current Node
+		// this.currentNode = this.startNode; // set current Node
+		System.out.println("Start Node: " + this.startNode.getNodeName());
 		
-		
-		this.allNodes.remove(this.currentNode); // remove current Node from all Nodes
-		this.visitedNodes.add(this.currentNode); // add current Node to visited Nodes
-		
-		Map<Node, Integer> currentNeighbours = this.currentNode.getNeighbours(); // get neighbours for current Node
-		Set<Node> openNodes = currentNeighbours.keySet(); // get all neighbours Nodes
-		
-		// if there is at least one neighbour, iterate until find the one with less cost
-		if (openNodes.size() > 0 ) {
-			Node nextNode = (Node) openNodes.toArray()[0];
+		// this.allNodes.remove(this.currentNode); // remove current Node from all Nodes
+		this.visitedNodes.add(this.startNode); // add current Node to visited Nodes
+		while (true) {
+			Map<Node, Integer> startNeighbours = this.startNode.getNeighbours(); // get neighbours realting the start Node
+			Set<Node> openNodes = startNeighbours.keySet(); // get all neighbours Nodes
+
+			List<Node> nodesToBeRemoved = new ArrayList<Node>();
+			for (Node node : openNodes) 
+				if (this.visitedNodes.contains(node))
+					nodesToBeRemoved.add(node);
 			
+			openNodes.removeAll(nodesToBeRemoved);
+			
+			System.out.println("Open Nodes: ");
 			for (Node node : openNodes) {
+				System.out.print(node.getNodeName() + ", ");
+			}
+			System.out.println();
+			// if there is at least one neighbour
+			if (openNodes.size() > 0 ) {
 				
-				if (currentNeighbours.get(node) < currentNeighbours.get(nextNode)) {
-					nextNode = node;
-				}
-					
-				// set path and cost to reach each node
-				for (Path path : this.pathList) {
-					if (
-						path.getFinalNode() == node && 
-						path.getStartNode() == this.currentNode && 
-						path.getTotalCost() > currentNeighbours.get(node)
-						) {
-						path.setTotalCost(currentNeighbours.get(node));
-						path.addNodesPath(node);
-					} else if (path.getFinalNode() == node) {
-						
+				Node nextNode = (Node) openNodes.toArray()[0];
+				
+				// iterate until find the one with less cost
+				for (Node node : openNodes)			
+					if (startNeighbours.get(node) < startNeighbours.get(nextNode))
+						nextNode = node;
+				
+				System.out.println("Next Node: " + nextNode.getNodeName() +"; Cost: " + startNeighbours.get(nextNode));
+				
+				Map<Node, Integer> nextNeighbours = nextNode.getNeighbours(); // get neighbours realting the next Node
+				Set<Node> nextNodes = nextNeighbours.keySet(); // get all neighbours Nodes
+				
+				// att first Node neighbours with this new information
+				for (Node node : nextNodes) {
+					if (startNeighbours.containsKey(node)) {
+						if (startNeighbours.get(node) > startNeighbours.get(nextNode) + nextNeighbours.get(node)) {
+							this.startNode.addNeighbour(node, startNeighbours.get(nextNode) +  nextNeighbours.get(node));
+						}
+					} else {
+						this.startNode.addNeighbour(node, startNeighbours.get(nextNode) + nextNeighbours.get(node));
 					}
 				}
-			}
 				
-			
+				System.out.println("---------------");
+				this.visitedNodes.add(nextNode);
+				
+			} else {
+				break;
+			}
 		}
+		
 		
 		
 		return this.pathList;
