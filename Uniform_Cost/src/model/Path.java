@@ -1,54 +1,37 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Path {
 	
-	private List<Node> nodesPath;
-	private Node startNode;
-	private Node finalNode;
+	private Node destinationNode;
+	private Node previousNode;
 	private int totalCost;
 
-	public Path (Node startNode, Node finalNode) {
-		this.startNode = startNode;
-		this.finalNode = finalNode;
-		this.totalCost = -1;
-		this.nodesPath = new ArrayList<Node>();
+	public Path (Node previousNode, Node destinationNode, int totalCost) {
+		this.previousNode = previousNode;
+		this.destinationNode = destinationNode;
+		this.totalCost = totalCost;
 	}
 	
-	public List<Node> addNodesPath(Node node) {
-		this.nodesPath.add(node);
-		return nodesPath;
+	public String toString() {
+		return ("Node: " + this.destinationNode.getNodeName() + 
+				"; Previous Node: " + this.previousNode.getNodeName() + 
+				"; Total Cost: " + this.totalCost);
 	}
 	
-	public List<Node> removeNodesPath(Node node) {
-		this.nodesPath.remove(node);
-		return nodesPath;
-	}
-	
-	public List<Node> getNodesPath() {
-		return nodesPath;
+	public Node getDestinationNode() {
+		return destinationNode;
 	}
 
-	public void setNodesPath(List<Node> nodesPath) {
-		this.nodesPath = nodesPath;
+	public void setDestinationNode(Node destinationNode) {
+		this.destinationNode = destinationNode;
 	}
 
-	public Node getStartNode() {
-		return startNode;
+	public Node getPreviousNode() {
+		return previousNode;
 	}
 
-	public void setStartNode(Node startNode) {
-		this.startNode = startNode;
-	}
-
-	public Node getFinalNode() {
-		return finalNode;
-	}
-
-	public void setFinalNode(Node finalNode) {
-		this.finalNode = finalNode;
+	public void setPreviousNode(Node previousNode) {
+		this.previousNode = previousNode;
 	}
 
 	public int getTotalCost() {

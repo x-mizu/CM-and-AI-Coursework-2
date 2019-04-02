@@ -1,9 +1,9 @@
 package main;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import model.Node;
+import model.Path;
 import search.UniformCost;
 
 public class Main {
@@ -56,22 +56,13 @@ public class Main {
 		J.addNeighbour(F, 5);
 		// ------------------
 		
-		// creates a list with all the nodes
-		List<Node> allNodes = new ArrayList<Node>();
-		allNodes.add(S);
-		allNodes.add(A);
-		allNodes.add(B);
-		allNodes.add(C);
-		allNodes.add(D);
-		allNodes.add(E);
-		allNodes.add(F);
-		allNodes.add(G1);
-		allNodes.add(G2);
-		allNodes.add(J);
-		// ------------------
 		
-		UniformCost uc = new UniformCost(allNodes, S);
-		uc.SearchBestPaths();
+		UniformCost uc = new UniformCost(S);
+		List<Path> listPath = uc.SearchBestPath();
+		
+		for (Path path : listPath) {
+			System.out.println(path.toString());
+		}
 	}
 
 }
