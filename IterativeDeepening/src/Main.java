@@ -1,6 +1,4 @@
 
-import aiii2.Node;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -48,9 +46,9 @@ public class Main {
         j.addNeighbour(f);
         j.addNeighbour(g1);
         
-//        System.out.println(s.getName());
-//        System.out.println(s.getNumber());
-//        System.out.println(s.getAdjacenciesList());
+        System.out.println(s.getName());
+        System.out.println(s.getNumber());
+        System.out.println(s.getAdjacenciesList());
 
     }
 }
