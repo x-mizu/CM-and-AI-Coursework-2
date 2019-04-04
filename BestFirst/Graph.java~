@@ -55,7 +55,7 @@ public class Graph {
 
         name = "C";
         adjList = new AdjList();
-		adjList.add(new AdjNode("D", 5));
+	adjList.add(new AdjNode("D", 5));
         adjList.add(new AdjNode("B", 2));
         adjList.add(new AdjNode("J", 1));
         adjList.add(new AdjNode("F", 3));
