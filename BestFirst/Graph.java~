@@ -1,4 +1,4 @@
-package cn.edu.gdut.java.test;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,9 +54,7 @@ public class Graph {
         }
     }
 
-    /**
-     * init Touring in Romania road map
-     */
+   
     public void init() {
         graph = new HashMap<>();
 
