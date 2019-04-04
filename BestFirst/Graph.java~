@@ -10,56 +10,43 @@ public class Graph {
     private Map<String, AdjList> graph;
 
 
-    /**
-     * test main
-     *
-     * @param args
-     */
+ 
     public static void main(String[] args) {
-        GBFS("S", "G1");
+        GBFS("S", "G1"); 
 
     }
 
-    /**
-     * algorithm: Greedy Best First Search
-     * Greedy Best-First Search
-     * use heuristic function as evaluation function: f(n) = h(n)
-     * always expands the node that is closest to the goal node
-     * @param start start node
-     * @param end   end node
-     */
+ 
     public static void GBFS(String start, String end) {
-        Graph roads = new Graph();
-        roads.init();
-        AdjList adjList = roads.graph.get(start);
+        Graph path = new Graph();
+        path.init();
+        AdjList adjList = path.graph.get(start);
         System.out.println("Greedy Best First Search");
         AdjNode startNode = findNode(adjList, start);
-        System.out.print("start from node: \n" + start + "(" + startNode.cost + ")" + "-->");
-        int totalCost = 0;
+        System.out.print( start + "(" + startNode.cost + ")" + "-->");
+        int totalCost = 0; 
         while (adjList.size() > 0) {
             AdjNode nextNode = adjList.poll();
             int nodeCost = nextNode.cost;
             totalCost += nodeCost;
 
             System.out.print(nextNode.name + "(" + nodeCost + ")-->");
-            adjList = roads.graph.get(nextNode.name);
+            adjList = path.graph.get(nextNode.name);
 
             if (isExist(adjList, end)) {
                 int lastNodeCost = adjList.poll().cost;
                 totalCost += lastNodeCost;
-                System.out.println(end + "(" + lastNodeCost + ").");
-                System.out.println("find path! \ntotal cost is : " + totalCost);
+                System.out.println(end + "(" + lastNodeCost + ")");
+                System.out.println("Total cost: " + totalCost);
                 return;
             }
         }
     }
 
-   
     public void init() {
         graph = new HashMap<>();
 
         String name = "S";
-        int cost = 9;
         AdjList adjList = new AdjList();
         adjList.add(new AdjNode("S", 9));
         adjList.add(new AdjNode("A", 6));
@@ -80,13 +67,7 @@ public class Graph {
         graph.put(name, adjList);
     }
 
-    /**
-     * whether the node name is in the adjlist
-     *
-     * @param adjList
-     * @param name
-     * @return
-     */
+  
     public static boolean isExist(AdjList adjList, String name) {
         for (AdjNode n :
                 adjList) {
@@ -97,13 +78,7 @@ public class Graph {
         return false;
     }
 
-    /**
-     * find a node by name
-     *
-     * @param adjList
-     * @param name
-     * @return
-     */
+
     public static AdjNode findNode(AdjList adjList, String name) {
         for (AdjNode n :
                 adjList) {
@@ -116,17 +91,12 @@ public class Graph {
 
 }
 
-/**
- * adjacent list
- * priority queue
- */
+
 class AdjList extends PriorityQueue<AdjNode> {
 
 }
 
-/**
- * adjacent node
- */
+
 class AdjNode implements Comparable<AdjNode> {
     String name;
     int cost;
