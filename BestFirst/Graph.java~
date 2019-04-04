@@ -1,5 +1,3 @@
-
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -12,7 +10,7 @@ public class Graph {
 
  
     public static void main(String[] args) {
-        GBFS("S", "G1"); 
+        GBFS("S", "F"); 
 
     }
 
@@ -47,6 +45,7 @@ public class Graph {
         graph = new HashMap<>();
 
         String name = "S";
+		int cost = 9;
         AdjList adjList = new AdjList();
         adjList.add(new AdjNode("S", 9));
         adjList.add(new AdjNode("A", 6));
@@ -56,6 +55,7 @@ public class Graph {
 
         name = "C";
         adjList = new AdjList();
+		adjList.add(new AdjNode("D", 5));
         adjList.add(new AdjNode("B", 2));
         adjList.add(new AdjNode("J", 1));
         adjList.add(new AdjNode("F", 3));
@@ -63,6 +63,7 @@ public class Graph {
 
         name = "J";
         adjList = new AdjList();
+		adjList.add(new AdjNode("J", 1));
         adjList.add(new AdjNode("G1", 0));
         graph.put(name, adjList);
     }
