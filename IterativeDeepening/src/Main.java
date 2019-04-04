@@ -46,9 +46,40 @@ public class Main {
         j.addNeighbour(f);
         j.addNeighbour(g1);
         
-        System.out.println(s.getName());
-        System.out.println(s.getNumber());
-        System.out.println(s.getAdjacenciesList());
+        IterativeDeepening i = new IterativeDeepening(g1, g2);
+        i.runDeepeningSearch(s);
+        
+//        System.out.println(s.getName());
+//        System.out.println(s.getNumber());
+//        System.out.println(s.getAdjacenciesList());
+//        
+//        System.out.println(a.getName());
+//        System.out.println(a.getNumber());
+//        System.out.println(a.getAdjacenciesList());
+//        
+//        System.out.println(b.getName());
+//        System.out.println(b.getNumber());
+//        System.out.println(b.getAdjacenciesList());
+//        
+//        System.out.println(c.getName());
+//        System.out.println(c.getNumber());
+//        System.out.println(c.getAdjacenciesList());
+//        
+//        System.out.println(d.getName());
+//        System.out.println(d.getNumber());
+//        System.out.println(d.getAdjacenciesList());
+//        
+//        System.out.println(e.getName());
+//        System.out.println(e.getNumber());
+//        System.out.println(e.getAdjacenciesList());
+//        
+//        System.out.println(f.getName());
+//        System.out.println(f.getNumber());
+//        System.out.println(f.getAdjacenciesList());
+//        
+//        System.out.println(j.getName());
+//        System.out.println(j.getNumber());
+//        System.out.println(j.getAdjacenciesList());
 
     }
 }

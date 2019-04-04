@@ -5,7 +5,7 @@
  */
 
 import java.util.ArrayList;
-import java.util.List;
+//import java.util.List;
 
 /**
  *
@@ -14,8 +14,8 @@ import java.util.List;
 
 public class Node {
     private String name;
-    private int depthlevel = 0;
-    private List<Node> adjacenciesList;
+    private int depthlevel;
+    private ArrayList<Node> adjacenciesList;
     private int number;
     
     public Node(String name, int number){
@@ -25,7 +25,7 @@ public class Node {
     }
     
     public void addNeighbour(Node node){
-        this.adjacenciesList.add(node);
+        this.adjacenciesList.add(0, node);
     }
 
     public String getName() {
@@ -44,11 +44,11 @@ public class Node {
         this.depthlevel = depthlevel;
     }
 
-    public List<Node> getAdjacenciesList() {
+    public ArrayList<Node> getAdjacenciesList() {
         return adjacenciesList;
     }
 
-    public void setAdjacenciesList(List<Node> adjacenciesList) {
+    public void setAdjacenciesList(ArrayList<Node> adjacenciesList) {
         this.adjacenciesList = adjacenciesList;
     }
 
@@ -65,13 +65,6 @@ public class Node {
         return this.name;
     }
 
-    void setDepthLevel(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    int getDepthLevel() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
  
     
 }
