@@ -63,7 +63,7 @@ public class Graph {
 
         name = "J";
         adjList = new AdjList();
-		adjList.add(new AdjNode("J", 1));
+		adjList.add(new AdjNode("F", 3));
         adjList.add(new AdjNode("G1", 0));
         graph.put(name, adjList);
     }
