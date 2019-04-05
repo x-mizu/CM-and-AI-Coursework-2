@@ -10,7 +10,7 @@ public class Graph {
 
  
     public static void main(String[] args) {
-        GBFS("S", "F"); 
+        GBFS("S", "G1"); 
 
     }
 
