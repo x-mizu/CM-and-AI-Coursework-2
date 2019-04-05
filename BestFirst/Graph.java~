@@ -1,122 +1,103 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.ArrayList;
 
 public class Graph {
-
-
-    private Map<String, AdjList> graph;
-
-
  
     public static void main(String[] args) {
-        GBFS("S", "G1"); 
-
+		AdjList adj = new AdjList();
+		adj.add("BEGIN", "S", 9);
+		adj.add("S", "A", 6);
+		adj.add("S", "D", 5);
+		adj.add("S", "C", 2);
+		adj.add("C", "B", 2);
+		adj.add("C", "D", 5);
+		adj.add("C", "J", 1);
+		adj.add("C", "F", 3);
+		adj.add("J", "G1", 0);
+		adj.add("J", "F", 3);
+		
+		recurse(adj, "BEGIN", 0, "BEGIN", "Greedy");
     }
-
- 
-    public static void GBFS(String start, String end) {
-        Graph path = new Graph();
-        path.init();
-        AdjList adjList = path.graph.get(start);
-        System.out.println("Greedy Best First Search");
-        AdjNode startNode = findNode(adjList, start);
-        System.out.print( start + "(" + startNode.cost + ")" + "-->");
-        int totalCost = 0; 
-        while (adjList.size() > 0) {
-            AdjNode nextNode = adjList.poll();
-            int nodeCost = nextNode.cost;
-            totalCost += nodeCost;
-
-            System.out.print(nextNode.name + "(" + nodeCost + ")-->");
-            adjList = path.graph.get(nextNode.name);
-
-            if (isExist(adjList, end)) {
-                int lastNodeCost = adjList.poll().cost;
-                totalCost += lastNodeCost;
-                System.out.println(end + "(" + lastNodeCost + ")");
-                System.out.println("Total cost: " + totalCost);
-                return;
-            }
-        }
-    }
-
-    public void init() {
-        graph = new HashMap<>();
-
-        String name = "S";
-		int cost = 9;
-        AdjList adjList = new AdjList();
-        adjList.add(new AdjNode("S", 9));
-        adjList.add(new AdjNode("A", 6));
-        adjList.add(new AdjNode("C", 2));
-        adjList.add(new AdjNode("D", 5));
-        graph.put(name, adjList);
-
-        name = "C";
-        adjList = new AdjList();
-	adjList.add(new AdjNode("D", 5));
-        adjList.add(new AdjNode("B", 2));
-        adjList.add(new AdjNode("J", 1));
-        adjList.add(new AdjNode("F", 3));
-        graph.put(name, adjList);
-
-        name = "J";
-        adjList = new AdjList();
-		adjList.add(new AdjNode("F", 3));
-        adjList.add(new AdjNode("G1", 0));
-        graph.put(name, adjList);
-    }
-
-  
-    public static boolean isExist(AdjList adjList, String name) {
-        for (AdjNode n :
-                adjList) {
-            if (n.name.equals(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    public static AdjNode findNode(AdjList adjList, String name) {
-        for (AdjNode n :
-                adjList) {
-            if (n.name.equals(name)) {
-                return n;
-            }
-        }
-        return null;
-    }
-
+	
+	private static void recurse(AdjList adj, String stepString, int stepValue, String name1, String target) {
+		ArrayList<AdjNode> children = adj.find(name1);
+		if("Greedy".equals(target)) {
+			if(children.size() == 0) {
+				System.out.println(String.format("Greedy search finished. A route found below.%n%s, with cost %d .", stepString, stepValue));
+			} else {
+				int currentValue = children.get(0).getCost();
+				AdjNode currentNode = children.get(0);
+				for(AdjNode item : children) {
+					if(item.getCost() < currentValue) {
+						currentValue = item.getCost();
+						currentNode = item;
+					}
+				}
+				recurse(adj, String.format("%s => %s(%d)", stepString, currentNode.getRelation()[1], currentNode.getCost()), stepValue + currentNode.getCost(), currentNode.getRelation()[1], target);
+			}
+		} else {
+			if(name1.equals(target)) {
+				System.out.println(String.format("Searching for route to %s finished. A route found below.%n%s, with cost %d .", target, stepString, stepValue));
+			} else {
+				for(AdjNode item : children) {
+					recurse(adj, String.format("%s => %s(%d)", stepString, item.getRelation()[1], item.getCost()), stepValue + item.getCost(), item.getRelation()[1], target);
+				}
+			}
+		}
+	}
 }
 
+class AdjNode {
+    private String name1;
+	private String name2;
+    private int cost;
 
-class AdjList extends PriorityQueue<AdjNode> {
-
-}
-
-
-class AdjNode implements Comparable<AdjNode> {
-    String name;
-    int cost;
-
-    public AdjNode(String name, int cost) {
-        this.name = name;
+    public AdjNode(String name1, String name2, int cost) {
+        this.name1 = name1;
+		this.name2 = name2;
         this.cost = cost;
     }
 
-    @Override
-    public int compareTo(AdjNode o) {
-        return Integer.compare(cost, o.cost);
-    }
+	public String[] getRelation() {
+		return new String[]{this.name1, this.name2};
+	}
+	
+	public int getCost() {
+		return this.cost;
+	}
+}
 
-    @Override
-    public String toString() {
-        return "AdjNode{" +
-                "name='" + name + '\'' +
-                ", cost=" + cost +
-                '}';
-    }
+class AdjList {
+	private ArrayList<AdjNode> list = new ArrayList<>();
+	
+	public void add(String name1, String name2, int cost) {
+		int flag = 0;
+		for(AdjNode item : this.list) {
+			String[] names = item.getRelation();
+			if(names[0].equals(name1) && names[1].equals(name2)) {
+				flag = 1;
+			}
+		}
+		if(flag == 0) {
+			this.list.add(new AdjNode(name1, name2, cost));
+		}
+	}
+	
+	public void delete(String name1, String name2) {
+		for(AdjNode item : this.list) {
+			String[] names = item.getRelation();
+			if(names[0].equals(name1) && names[1].equals(name2)) {
+				this.list.remove(item);
+			}
+		}
+	}
+	
+	public ArrayList<AdjNode> find(String name1) {
+		ArrayList<AdjNode> result = new ArrayList<>();
+		for(AdjNode item : this.list) {
+			if(item.getRelation()[0].equals(name1)) {
+				result.add(item);
+			}
+		}
+		return result;
+	}
 }
