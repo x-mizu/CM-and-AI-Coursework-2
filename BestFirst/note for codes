@@ -1,0 +1,105 @@
+port java.util.ArrayList; ////用于记录关系。
+
+//Main class
+public class Graph {
+
+	public static void main(String[] args) {
+		AdjList adj = new AdjList(); //为顶点之间的关系启动新实例
+		adj.add("BEGIN", "S", 9);
+		adj.add("S", "A", 6);
+		adj.add("S", "D", 5);
+		adj.add("S", "C", 2);
+		adj.add("C", "B", 2);
+		adj.add("C", "D", 5);
+		adj.add("C", "J", 1);
+		adj.add("C", "F", 3);
+		adj.add("J", "G1", 0);
+		adj.add("J", "F", 3);
+
+		recurse(adj, "BEGIN", 0, "BEGIN", "Greedy"); //递归查找所有给定点。如果目的地设置为“贪婪”。使用贪婪方法而不是给定的目标。Recursively find all given points. if the destination is set to "Greedy". greedy method is used instead of a given destination.
+	}
+
+	//主递归体
+	private static void recurse(AdjList adj, String stepString, int stepValue, String name1, String target) {
+		ArrayList<AdjNode> children = adj.find(name1); //Get all children
+		if("Greedy".equals(target)) { //If it is greedy
+			if(children.size() == 0) { //and no children
+				System.out.println(String.format("Greedy search finished. A route found below.%n%s, with cost %d .", stepString, stepValue)); //done
+			} else { //If there are children
+				int currentValue = children.get(0).getCost();
+				AdjNode currentNode = children.get(0);
+				for(AdjNode item : children) { //Find the cheapest child
+					if(item.getCost() < currentValue) {
+						currentValue = item.getCost();
+						currentNode = item;
+					}
+				}
+				recurse(adj, String.format("%s => %s(%d)", stepString, currentNode.getRelation()[1], currentNode.getCost()), stepValue + currentNode.getCost(), currentNode.getRelation()[1], target); //and continue
+			}
+		} else { //如果找到一个特定的点If find a specific point
+			if(name1.equals(target)) { //if found
+				System.out.println(String.format("Searching for route to %s finished. A route found below.%n%s, with cost %d .", target, stepString, stepValue)); //done
+			} else {
+				for(AdjNode item : children) { //或者递归地查找它的所有子代or recursively find on all its children
+					recurse(adj, String.format("%s => %s(%d)", stepString, item.getRelation()[1], item.getCost()), stepValue + item.getCost(), item.getRelation()[1], target);
+				}
+			}
+		}
+	}
+}
+//连接属性的节点类
+class AdjNode {
+	private String name1;
+	private String name2;
+	private int cost; //properties for node pairs
+
+	public AdjNode(String name1, String name2, int cost) { //initialise
+		this.name1 = name1;
+		this.name2 = name2;
+		this.cost = cost;
+	}
+
+	public String[] getRelation() { //get relation
+		return new String[] {this.name1, this.name2};
+	}
+
+	public int getCost() { //get cost
+		return this.cost;
+	}
+}
+
+class AdjList { //Array list for pairs
+	private ArrayList<AdjNode> list = new ArrayList<>();
+
+	public void add(String name1, String name2, int cost) { //检查重复项并添加到列表中Check duplication and add to the list
+		int flag = 0;
+		for(AdjNode item : this.list) {
+			String[] names = item.getRelation();
+			if(names[0].equals(name1) && names[1].equals(name2)) {
+				flag = 1;
+			}
+		}
+		if(flag == 0) {
+			this.list.add(new AdjNode(name1, name2, cost));
+		}
+	}
+
+	public void delete(String name1, String name2) { //删除代码中未使用的对delete a pair, not used in the code
+		for(AdjNode item : this.list) {
+			String[] names = item.getRelation();
+			if(names[0].equals(name1) && names[1].equals(name2)) {
+				this.list.remove(item);
+			}
+		}
+	}
+
+	public ArrayList<AdjNode> find(String name1) { //按点的名称查找所有子项find all children by the name of point
+		ArrayList<AdjNode> result = new ArrayList<>();
+		for(AdjNode item : this.list) {
+			if(item.getRelation()[0].equals(name1)) {
+				result.add(item);
+			}
+		}
+		return result;
+	}
+}
