@@ -5,17 +5,11 @@ import java.util.Map;
 public class Node {
 	
 	private String nodeName;
-	private boolean visited;
 	private Map<Node, Integer> neighbours;
 	
 	public Node(String nodeName) {
 		this.nodeName = nodeName;
-		this.visited = false;
 		this.neighbours = new HashMap<Node, Integer>();
-	}
-	
-	public boolean isVisited() {
-		return this.visited;
 	}
 	
 	public void addNeighbour(Node n, int cost) {
@@ -38,9 +32,4 @@ public class Node {
 		this.neighbours = neighbours;
 	}
 	
-	public void setVisited( boolean status  ) {
-		this.visited = status;
-	}
-	
-
 }

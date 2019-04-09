@@ -16,20 +16,18 @@ public class UniformCost {
 	private List<Node> visitedNodes;
 	private List<String[]> result;
 	
-	public UniformCost (Node startNode) {
-		this.startNode = startNode;
+	public UniformCost () {
 		this.iterations = 0;
 		this.pathList = new ArrayList<Path>();
-		
-		for (Node node : this.startNode.getNeighbours().keySet()) 
-			this.pathList.add(new Path(this.startNode, node, this.startNode.getNeighbours().get(node)));
-		
-		
 		this.visitedNodes = new ArrayList<Node>();
 		this.result = new ArrayList<String[]>();
 	}
 	
-	public List<Path> SearchBestPath() {
+	public List<Path> SearchBestPath(Node startNode) {
+		this.startNode = startNode;
+		for (Node node : this.startNode.getNeighbours().keySet()) 
+			this.pathList.add(new Path(this.startNode, node, this.startNode.getNeighbours().get(node)));
+		
 		// this.visitedNodes.add(this.startNode); // add start Node to visited Nodes
 		
 		// print and set result Table

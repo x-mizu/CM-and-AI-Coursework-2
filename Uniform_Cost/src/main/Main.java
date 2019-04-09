@@ -59,8 +59,8 @@ public class Main {
 		// ------------------
 		
 		
-		UniformCost uc = new UniformCost(S);
-		List<Path> listPath = uc.SearchBestPath();
+		UniformCost uc = new UniformCost();
+		List<Path> listPath = uc.SearchBestPath(S);
 		List<String[]> resultToPrint = uc.getResult();
 		
 		for (String[] strings : resultToPrint) {
